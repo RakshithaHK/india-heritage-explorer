@@ -38,3 +38,5 @@ $$ LANGUAGE plpgsql SET search_path = public;
 CREATE TRIGGER update_places_updated_at
   BEFORE UPDATE ON public.places
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+
+CREATE POLICY "Allow anyone to insert places" ON public.places FOR INSERT WITH CHECK (true);

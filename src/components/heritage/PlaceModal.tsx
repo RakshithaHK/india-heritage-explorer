@@ -1,8 +1,8 @@
-import { X, Volume2, VolumeX, MapPin } from 'lucide-react';
+import { X, MapPin, Volume2, Square } from 'lucide-react';
+import { useState } from 'react';
 import type { Place, Language } from '@/types/place';
 import { CATEGORY_LABELS } from '@/types/place';
 import ImageCarousel from './ImageCarousel';
-import { useSpeech } from '@/hooks/useSpeech';
 
 interface Props {
   place: Place;
@@ -16,8 +16,25 @@ function getDescription(place: Place, lang: Language): string {
 }
 
 export default function PlaceModal({ place, language, onClose }: Props) {
-  const { isSpeaking, toggle } = useSpeech();
   const description = getDescription(place, language);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const speakText = (text: string, lang: string) => {
+    if (isSpeaking) {
+      speechSynthesis.cancel();
+    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    speechSynthesis.cancel();
+    setIsSpeaking(false);
+  };
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4" onClick={onClose}>
@@ -61,21 +78,33 @@ export default function PlaceModal({ place, language, onClose }: Props) {
             </span>
           </div>
 
-          {/* Description with speech */}
+          {/* Description */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium text-muted-foreground">Description</h3>
-              <button
-                onClick={() => toggle(description, language)}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-secondary hover:bg-secondary/80 text-foreground transition-colors"
-              >
-                {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                {isSpeaking ? 'Stop' : 'Read Aloud'}
-              </button>
-            </div>
+            <h3 className="text-sm font-medium text-muted-foreground">Description</h3>
             <p className="text-sm text-foreground/80 leading-relaxed">
               {description}
             </p>
+          </div>
+
+          {/* Read Aloud Buttons */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            <button
+              onClick={() => speakText(place.description_en || '', 'en-US')}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-primary/20 text-primary rounded-md hover:bg-primary/30 transition-colors"
+              disabled={isSpeaking}
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+              Read English
+            </button>
+            {isSpeaking && (
+              <button
+                onClick={stopSpeaking}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-red-500/20 text-red-600 rounded-md hover:bg-red-500/30 transition-colors"
+              >
+                <Square className="w-3.5 h-3.5" />
+                Stop
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -89,6 +89,17 @@
 .leaflet-container {
   background: hsl(222, 47%, 6%) !important;
   font-family: var(--font-body) !important;
+  cursor: default !important;
+}
+
+.leaflet-container .leaflet-marker-icon {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* Prevent map events from interfering with marker clicks */
+.leaflet-container .leaflet-marker-pane {
+  z-index: 600 !important;
 }
 
 .leaflet-tile-pane {
@@ -132,4 +143,32 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+}
+
+/* Ensure map markers are highly visible */
+.leaflet-marker-icon {
+  z-index: 1000 !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.leaflet-marker-icon:hover {
+  opacity: 0.8 !important;
+}
+
+/* Ensure marker shadows don't interfere with clicks */
+.leaflet-marker-shadow {
+  pointer-events: none !important;
+}
+
+/* Custom gold marker styling */
+.custom-gold-marker {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.custom-gold-marker:hover {
+  opacity: 0.8 !important;
 }

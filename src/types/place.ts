@@ -10,6 +10,9 @@ export interface Place {
   description_kn: string | null;
   images: string[] | null;
   category: string;
+  builtYear: string | null;
+  dynasty: string | null;
+  architecturalStyle: string | null;
 }
 
 export const LANGUAGE_LABELS: Record<Language, string> = {

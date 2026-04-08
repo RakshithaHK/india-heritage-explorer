@@ -25,6 +25,7 @@ export default function Index() {
   }, [places, search, category]);
 
   const handleSelectPlace = useCallback((place: Place) => {
+    console.log('handleSelectPlace called with:', place);
     setSelectedPlace(place);
   }, []);
 

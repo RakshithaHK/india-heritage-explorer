@@ -1,16 +1,536 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import type { Place } from '@/types/place';
 
+// Comprehensive local data with accurate historical places across India
+const LOCAL_PLACES: Place[] = [
+  // Delhi
+  {
+    id: '1',
+    name: 'Red Fort',
+    latitude: 28.6562,
+    longitude: 77.2410,
+    description_en: 'Red Fort is a Mughal imperial fort complex in Old Delhi, commissioned by Shah Jahan in 1638. Its red sandstone walls housed royal residences, public halls, gardens and military stores, and it became a symbol of India’s independence after the first tricolor was raised there in 1947.',
+    description_hi: 'लाल किला 1638 में शाहजहां द्वारा बनवाया गया मुगल शाही किला परिसर है। इसकी लाल बलुआ पत्थर की दीवारों के भीतर शाही आवास, दरबार हॉल, बगीचे और सैन्य गोदाम थे, और 1947 में यहां तिरंगा फहराए जाने के बाद यह आजादी का प्रतीक बन गया।',
+    description_kn: 'ರೆಡ್ ಫೋರ್ಟ್ 1638 ರಲ್ಲಿ ಶಾ ಜಹಾನ್ ನಿರ್ಮಿಸಿದ ಮುಘಲ್ ಶाही ಕೋಟೆ ಸಂಕೀರ್ಣ. ಅದರ ಕೆಂಪು ಮಣ್ಣಿನ ಬಲ್ಲಿಯ ಗೋಡೆಯೊಳಗೆ ರಾಜಮನೆಗಳು, ಸಾರ್ವಜನಿಕ ಮಹಡಿಗಳು, ಉದ್ಯಾನಗಳು ಮತ್ತು ಸೈನಿಕ ಸಂಗ್ರಾಹಾಲಯಗಳಿವೆ, ಮತ್ತು 1947 ರಲ್ಲಿ ಇಲ್ಲಿ ಧ್ವಜಾರೋಹಣದ ನಂತರ ಇದು ಭಾರತದ ಸ್ವಾತಂತ್ರ್ಯದ ಸಂಕೇತವಾಯಿತು.',
+    category: 'fort',
+    builtYear: '1638',
+    dynasty: 'Mughal',
+    architecturalStyle: 'Mughal',
+    images: ['/images/Red_Fort.jpg']
+  },
+  {
+    id: '2',
+    name: 'Qutub Minar',
+    latitude: 28.5244,
+    longitude: 77.1855,
+    description_en: 'Qutub Minar is a 73-meter-high tower begun by Qutb-ud-din Aibak in 1192 and completed by his successors. The Qutb complex showcases early Indo-Islamic architecture through its detailed carvings, the ancient Iron Pillar, and the ruined Quwwat-ul-Islam Mosque.',
+    description_hi: 'कुतुब मीनार 1192 में कुतुबुद्दीन ऐबक द्वारा शुरू की गई 73 मीटर ऊँची मीनार है, जिसे उनके उत्तराधिकारियों ने पूरा किया। कुतुब परिसर अपने विस्तृत नक्काशीदार पत्थरों, प्राचीन लोहे के स्तंभ और कुव्वत-उल-इस्लाम मस्जिद के अवशेषों के माध्यम से शुरुआती इंडो-इस्लामिक वास्तुकला को दर्शाता है।',
+    description_kn: 'ಕುತಬ್ ಮಿನಾರ್ 1192 ರಲ್ಲಿ ಕುತ್ತಬ್ ಉದ್ದಿನ್ ಐಬಕ್ ಆರಂಭಿಸಿದ 73 ಮೀಟರ್ ಎತ್ತರದ ಟವರ್, ನಂತರದ ಬಾಧಾಕಾರರಿಂದ ಪೂರ್ಣಗೊಂಡಿತು. ಕುತ್ತಬ್ ಸಂಕೀರ್ಣದ ವಿಜ್ಞಾನದಲ್ಲಿ ಸಂಪೂರ್ಣ ಮೊಸುಂಬು ಶಿಲ್ಪ, ಪುರಾತನ ಐರಾನ್ ಪಿಲ್ಲರ್ ಮತ್ತು ಕುತ್ವಾತ್ ಉಲ್-ಇಸ್ಲಾಮ್ ಮಸೀದಿಯ ಅವಶೇಷಗಳು ಪ್ರಾರಂಭಿಕ ಇಂದೋ-ಇಸ್ಲಾಮಿಕ್ ವಾಸ್ತುಶಿಲ್ಪವನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '1192',
+    dynasty: 'Mamluk',
+    architecturalStyle: 'Indo-Islamic',
+    images: ['/images/Qutub_Minar.jpg']
+  },
+  {
+    id: '3',
+    name: 'India Gate',
+    latitude: 28.6129,
+    longitude: 77.2295,
+    description_en: 'India Gate is a monumental arch in New Delhi designed by Sir Edwin Lutyens to honor the soldiers of the British Indian Army who died in World War I. The central memorial and the Amar Jawan Jyoti have become enduring symbols of national sacrifice and remembrance.',
+    description_hi: 'इंडिया गेट नई दिल्ली में सर एडविन लुटियंस द्वारा डिजाइन किया गया एक विशाल मेहराब है, जो प्रथम विश्व युद्ध में मारे गए ब्रिटिश भारतीय सेना के सैनिकों को श्रद्धांजलि देता है। केंद्रीय स्मारक और अमर जवान ज्योति राष्ट्रीय बलिदान और स्मरण के स्थायी प्रतीक बन गए हैं।',
+    description_kn: 'ಇಂಡಿಯಾ ಗೇಟ್ ನ್ಯೂ ದೆಹಲಿಯಲ್ಲಿ ಸರ್ ಎಡ್ವಿನ್ ಲೂಟಿಯನ್ಸ್ ವಿನ್ಯಾಸದ ಭವ್ಯ ಬಾಗಿಲು, ಮೊದಲದ ವಿಶ್ವ ಯುದ್ಧದಲ್ಲಿ ಮೃತಪಟ್ಟ ಬ್ರಿಟಿಷ್ ಇಂಡಿಯನ್ ಸೇನೆಯ ಸೈನಿಕರಿಗೆ ಗೌರವ ಅರ್ಪಿಸುತ್ತದೆ. ಮಧ್ಯದಲ್ಲಿನ ಸ್ಮಾರಕ ಮತ್ತು ಅಮರ್ ಜವಾನ್ ಜ್ಯೋತಿ ರಾಷ್ಟ್ರೀಯ ಬಲಿದಾನ ಮತ್ತು ಸ್ಮರಣೆಯ ಪ್ರವಚನವಾಗಿದೆ.',
+    category: 'monument',
+    builtYear: '1921',
+    dynasty: 'British Raj',
+    architecturalStyle: 'Indo-Saracenic',
+    images: ['/images/India_Gate.jpg']
+  },
+
+  // Agra
+  {
+    id: '4',
+    name: 'Taj Mahal',
+    latitude: 27.1751,
+    longitude: 78.0421,
+    description_en: 'Taj Mahal is a white marble mausoleum built by Shah Jahan for his wife Mumtaz Mahal, completed in 1653. Its perfect symmetry, intricate pietra dura inlay, and reflecting pools make it a masterpiece of Mughal architecture and a global symbol of love.',
+    description_hi: 'ताज महल एक सफेद संगमरमर का मकबरा है जिसे शाहजहां ने अपनी पत्नी मुमताज महल के लिए बनवाया, जो 1653 में पूरा हुआ। इसकी परफेक्ट सममिति, जटिल पत्थर की जड़ाई और परावर्तित तालाब इसे मुगल वास्तुकला की एक उत्कृष्ट कृति और प्रेम का वैश्विक प्रतीक बनाते हैं।',
+    description_kn: 'ತಾಜ್ ಮಹಲ್ ಒಂದು ಶ್ವೇತ ಮಾರ್ಬಲ್ ಸಮಾಧಿ, ಶಾ ಜಹಾನ್ ತನ್ನ ಪತ್ನಿ ಮುಮ್ತಾಜ್ ಮಹಲ್ ಗಾಗಿ ನಿರ್ಮಿಸಿದ, 1653 ರಲ್ಲಿ ಪೂರ್ಣಗೊಂಡಿತು. ಅದರ ಸಮತೋಲನ, ಅಲಂಕೃತ ಕುಂಚು ಕಲ್ಲು ಅಳವಡಿಕೆ ಮತ್ತು ಪ್ರತಿಬಿಂಬಿಸುವ ಕೆರೆಗಳು ಮುಘಲ್ ವಾಸ್ತುಶಿಲ್ಪದ ಅದ್ಭುತ ಮತ್ತು ಪ್ರೀತಿ ಗ್ಲೋಬಲ್ ಪ್ರತೀಕವಾಗಿವೆ.',
+    category: 'monument',
+    builtYear: '1653',
+    dynasty: 'Mughal',
+    architecturalStyle: 'Mughal',
+    images: ['/images/Taj_Mahal.jpg']
+  },
+  {
+    id: '5',
+    name: 'Agra Fort',
+    latitude: 27.1795,
+    longitude: 78.0211,
+    description_en: 'Agra Fort is a massive red sandstone fortress built by Akbar in 1565 and expanded by Shah Jahan. It served as the Mughal imperial capital and contains palaces, mosques and audience halls that reflect changing courtly styles over three centuries.',
+    description_hi: 'आगरा किला एक विशाल लाल बलुआ पत्थर का किला है, जिसे अकबर ने 1565 में बनवाया और बाद में शाहजहां ने बढ़ाया। यह मुगल साम्राज्य की राजधानी रहा और इसके महल, मस्जिदें और दरबार हॉल तीन सदियों में बदलते दरबारी शैलियों को दर्शाते हैं।',
+    description_kn: 'ಆಗ್ರಾ ಕೋಟೆ ಒಂದು ಭಾರಿ ಕೆಂಪು ಬಲ್ಲಿಯ ಕೋಟೆ, ಅಕ್ಬರ್ 1565 ರಲ್ಲಿ ನಿರ್ಮಿಸಿದ ಮತ್ತು ನಂತರ ಶಾ ಜಹಾನ್ ವಿಸ್ತರಿಸಿದ. ಇದು ಮುಘಲ್ ಸಾಮ್ರಾಜ್ಯದ ರಾಜಧಾನಿಯಾಗಿತ್ತು ಮತ್ತು ಅದರ ಅರಮನೆಗಳು, ಮಸೀದಿಗಳು ಮತ್ತು ಸಭಾಂಗಣಗಳು ಮೂರು ಶತಮಾನಗಳ ರಾಜಮನೆ ಶೈಲಿಗಳನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತವೆ.',
+    category: 'fort',
+    builtYear: '1565',
+    dynasty: 'Mughal',
+    architecturalStyle: 'Mughal',
+    images: ['/images/Agra_Fort.jpg']
+  },
+
+  // Jaipur
+  {
+    id: '6',
+    name: 'Amber Fort',
+    latitude: 26.9855,
+    longitude: 75.8513,
+    description_en: 'Amber Fort is a hilltop palace complex in Rajasthan known for its fusion of Rajput and Mughal architecture, mirrored Sheesh Mahal, and ornate frescoes. It was originally built by Raja Man Singh I and later became the ceremonial seat of the Kachwaha rulers.',
+    description_hi: 'एम्बर किला राजस्थान के पहाड़ी पर बना महल परिसर है, जो राजपूत और मुगल वास्तुकला के मिश्रण, शीश महल, और सजावटी भित्ति चित्रों के लिए प्रसिद्ध है। इसे राजा मान सिंह प्रथम ने बनाया और बाद में यह कचवाहा शासकों की औपचारिक सीट बन गया।',
+    description_kn: 'ಆಂಬರ್ ಕೋಟೆ ರಾಜಸ್ಥಾನದ ಎತ್ತರದ ಬೆಟ್ಟದ ಮೇಲೆ ಇರುವ ಅರಮನೆ ಸಂಕೀರ್ಣ, ರಾಜ್ಪುತ ಮತ್ತು ಮುಘಲ್ ವಾಸ್ತುಶಿಲ್ಪದ ಸಂಯೋಜನೆ, शीಶ್ ಮಹಲ್ ಮತ್ತು ಅಲಂಕೃತ ಭಿತ್ತಿಚಿತ್ರಗಳಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಇದನ್ನು ರಾಜಮಾನ್ಸಿಂಗ್ I ನಿರ್ಮಿಸಿದರು ಮತ್ತು ನಂತರ ಕಚ್ವಾಹಾ ಆಡಳಿತದ ವೈಭವಪೂರ್ಣ ಸೀಟಿನಾಗಿ ಬೆಳೆದಿತು.',
+    category: 'fort',
+    builtYear: '1592',
+    dynasty: 'Kachwaha Rajput',
+    architecturalStyle: 'Rajput-Mughal',
+    images: ['/images/Amber_Fort.jpg']
+  },
+  {
+    id: '7',
+    name: 'City Palace Jaipur',
+    latitude: 26.9258,
+    longitude: 75.8237,
+    description_en: 'City Palace Jaipur is a royal complex built by Maharaja Sawai Jai Singh II in the 18th century, combining Rajput and Mughal architectural elements. Its courtyards, museums, temples and art galleries trace the history of Jaipur’s royal family and court life.',
+    description_hi: 'सिटी पैलेस जयपुर एक शाही परिसर है जिसे 18वीं सदी में महाराजा सवाई जय सिंह द्वितीय ने बनवाया, जो राजपूत और मुगल वास्तुकला का मिश्रण है। इसके आंगन, संग्रहालय, मंदिर और कला दीर्घाएं जयपुर के शाही परिवार और दरबार जीवन का इतिहास दर्शाती हैं।',
+    description_kn: 'ಸಿಟಿ ಪ್ಯಾಲೇಸ್ ಜೈಪುರ 18ನೇ ಶತಮಾನದಲ್ಲಿ ಮಹಾರಾಜಾ ಸವಾಯಿ ಜೈ ಸಿಂಗ್ II ನಿರ್ಮಿಸಿದ ರಾಜಮನೆ ಸಂಕೀರ್ಣ, ಇದು ರಾಜ್‌ಪುತ್ ಮತ್ತು ಮುಘಲ್ ವಾಸ್ತುಶಿಲ್ಪದ ಅಂಶಗಳನ್ನು ಸಂಯೋಜಿಸುತ್ತದೆ. ಅದರ ಆವರಣಗಳು, ಮ್ಯೂಸಿಯಂಗಳು, ದೇವಸ್ಥಾನಗಳು ಮತ್ತು ಕಲೆ ಗ್ಯಾಲರಿಗಳು ಜೈಪುರದ ಶाही ಕುಟುಂಬ ಮತ್ತು ದಾವಣಿ ಜೀವನದ ಇತಿಹಾಸವನ್ನು ಹೇಳುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '1727',
+    dynasty: 'Kachwaha Rajput',
+    architecturalStyle: 'Rajput-Mughal',
+    images: ['/images/City_Palace_Jaipur.jpg']
+  },
+  {
+    id: '8',
+    name: 'Hawa Mahal',
+    latitude: 26.9239,
+    longitude: 75.8267,
+    description_en: 'Hawa Mahal, also called the Palace of Winds, was built in 1799 for royal women to observe street festivals while remaining unseen. Its unique honeycomb facade of 953 windows creates airflow and defines the iconic image of Jaipur.',
+    description_hi: 'हवा महल, जिसे हवाओं का महल भी कहा जाता है, 1799 में शाही महिलाओं के लिए बनाया गया था ताकि वे सड़क उत्सवों को छुपकर देख सकें। इसकी 953 खिड़कियों वाली अनोखी जाली हवाएं बनाती है और जयपुर की प्रतिष्ठित छवि को आकार देती है।',
+    description_kn: 'ಹವಾ ಮಹಲ್, ಗಾಳಿಯ ಅರಮನೆ ಎಂದೂ ಕರೆಯಲ್ಪಡುವುದು, 1799 ರಲ್ಲಿ ರಾಜಮನೆ ಮಹಿಳೆಯರು ರಸ್ತೆ ಹಬ್ಬಗಳನ್ನು ಅಚೆತನವಾಗಿ ನೋಡುವಂತೆ ನಿರ್ಮಿಸಲಾಯಿತು. 953 ಕಿಟಕಿಯ蜜蜂ದ ಬಾಡಿಯ ಒಳಹೊರವು ಗಾಳಿಯ ಹರಿವನ್ನು ಒದಗಿಸುತ್ತದೆ ಮತ್ತು ಜೈಪುರದ ಐಕಾನಿಕ್ ಚಿತ್ರವನ್ನು ರೂಪಿಸುತ್ತದೆ.',
+    category: 'monument',
+    builtYear: '1799',
+    dynasty: 'Kachwaha Rajput',
+    architecturalStyle: 'Rajput',
+    images: ['/images/Hawa_Mahal.jpg']
+  },
+
+  // Varanasi
+  {
+    id: '9',
+    name: 'Kashi Vishwanath Temple',
+    latitude: 25.3109,
+    longitude: 83.0103,
+    description_en: 'Kashi Vishwanath Temple is one of Varanasi’s holiest shrines dedicated to Lord Shiva, located on the Ganges’ western bank. Its gilded spire, sacred lingam, and centuries-old rituals draw pilgrims who seek spiritual liberation and divine blessing.',
+    description_hi: 'काशी विश्वनाथ मंदिर वाराणसी का सबसे पवित्र तीर्थस्थल है, जो गंगा के पश्चिमी तट पर स्थित है और भगवान शिव को समर्पित है। इसका सोने का शिखर, पवित्र लिंग और सदियों पुरानी परंपराएं तीर्थयात्रियों को आध्यात्मिक मुक्ति और देव आशीर्वाद के लिए आकर्षित करती हैं।',
+    description_kn: 'ಕಾಶಿ ವಿಶ್ವನಾಥ್ ದೇವಸ್ಥಾನ ವಾರಾಣಸಿ‌ನ ಅತ್ಯಂತ ಪವಿತ್ರ ತೀರ್ಥ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಒಂದಾಗಿದೆ, ಇದು ಗಂಗಾ ನದಿಯ ಪಶ್ಚಿಮ ತಟದಲ್ಲಿ ಇರುವ ಶಿವನಿಗೆ ಸಮರ್ಪಿತವಾಗಿದೆ. ಅದರ ಚಿನ್ನದ ಶಿಖರ, ಪವಿತ್ರ ಲಿಂಗ ಮತ್ತು ಶತಮಾನಗಳ ಆಚರಣೆಗಳು ಯಾತ್ರಿಕರನ್ನು ಆಧ್ಯಾತ್ಮಿಕ ಮುಕ್ತಿಯನ್ನು ಮತ್ತು ದೇವರ ಆಶೀರ್ವಾದವನ್ನು ಹುಡುಕಲು ಆಕರ್ಷಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1780',
+    dynasty: 'Maratha',
+    architecturalStyle: 'Nagara',
+    images: ['/images/Kashi_Vishwanath_Temple.jpg']
+  },
+
+  // Mumbai
+  {
+    id: '10',
+    name: 'Gateway of India',
+    latitude: 18.9220,
+    longitude: 72.8347,
+    description_en: 'Gateway of India is a monumental arch in Mumbai built in 1924 to welcome King George V and Queen Mary. It later became the ceremonial departure point for British troops and remains a bustling waterfront landmark.',
+    description_hi: 'गेटवे ऑफ इंडिया मुंबई में 1924 में बनाया गया एक शानदार मेहराब है, जिसे राजा जॉर्ज पंचम और रानी मैरी का स्वागत करने के लिए खड़ा किया गया था। बाद में यह ब्रिटिश सैनिकों के वैवाहिक प्रस्थान बिंदु बन गया और आज भी यह एक गतिशील समुद्र तटीय स्थल बना हुआ है।',
+    description_kn: 'ಗೇಟ್‌ವೇ ಆಫ್ ಇಂಡಿಯಾ ಮುಂಬೈಯಲ್ಲಿ 1924 ರಲ್ಲಿ ನಿರ್ಮಿಸಲಾದ ಭವ್ಯ ಬಾಗಿಲು, ರಾಜ ಜಾರ್ಜ್ V ಮತ್ತು ರಾಣಿ ಮೇರಿ ಅವರನ್ನು ಸ್ವಾಗತಿಸಲು. ನಂತರ ಇದು ಬ್ರಿಟಿಷ್ ಸೇನೆಯ ಶಾಸ്ത്രീಯ ನಿರ್ಗಮನ ಬಿಂದುವಾಯಿತು ಮತ್ತು ಇಂದಿಗೂ ಈ ತೀರದ ಪ್ರಸಿದ್ಧ ತಾಣವಾಗಿದೆ.',
+    category: 'monument',
+    builtYear: '1924',
+    dynasty: 'British Raj',
+    architecturalStyle: 'Indo-Saracenic',
+    images: ['/images/GateWay_of_India.jpg']
+  },
+
+  // Chennai
+  {
+    id: '11',
+    name: 'Kapaleeshwarar Temple',
+    latitude: 13.0339,
+    longitude: 80.2696,
+    description_en: 'Kapaleeshwarar Temple is a Dravidian-style Shiva temple in Chennai’s historic Mylapore district, believed to date to the 7th century CE. Its vibrant gopuram, intricately carved pillars and annual festivals celebrate Tamil devotion and temple culture.',
+    description_hi: 'कपालीश्वरर मंदिर चेन्नई के ऐतिहासिक मायलापुर जिले में स्थित एक द्रविड़ शैली का शिव मंदिर है, जिसकी शुरुआत 7वीं शताब्दी ईस्वी से मानी जाती है। इसका जीवंत गोपुरम, नक्काशीदार स्तंभ और वार्षिक उत्सव तमिल भक्ति और मंदिर संस्कृति को मनाते हैं।',
+    description_kn: 'ಕಪಾಲೀಶ್ವರರ್ ದೇವಾಲಯ ಚೆನ್ನೈನ ಚರಿತ್ರಾತ್ಮಕ ಮೈಲಾಪುರ ಜಿಲ್ಲೆಯಲ್ಲಿ ಸ್ಥಿತಿಯಲ್ಲಿರುವ ದ್ರಾವಿಡ ಶೈಲಿಯ ಶಿವ ದೇವಸ್ಥಾನ, ಕ್ರಿಸ್ತಶಕ 7 ನೇ ಶತಮಾನದಿಂದಂದು ನಂಬಲಾಗಿದೆ. ಅದರ ಬಣ್ಣದ ಗೋಪ್ರ, ಶ್ರೀಮಂತ ಶಿಲ್ಪಿತ ಸ್ಥಂಭಗಳು ಮತ್ತು ವಾರ್ಷಿಕ ಉತ್ಸವಗಳು ತಮಿಳು ಭಕ್ತಿ ಮತ್ತು ದೇವಾಲಯ ಸಂಸ್ಕೃತಿಯನ್ನು ಆಚರಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '7th century CE',
+    dynasty: 'Pallava/Chola',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Kapaleeswara_Temple.jpg']
+  },
+
+  // Kolkata
+  {
+    id: '12',
+    name: 'Victoria Memorial',
+    latitude: 22.5448,
+    longitude: 88.3426,
+    description_en: 'Victoria Memorial is a marble monument in Kolkata built between 1906 and 1921 in memory of Queen Victoria. It blends British and Mughal architectural styles and now houses museums with paintings, manuscripts and historic artifacts from the colonial period.',
+    description_hi: 'विक्टोरिया मेमोरियल कोलकाता में 1906 से 1921 के बीच रानी विक्टोरिया की याद में बनाया गया एक संगमरमर स्मारक है। यह ब्रिटिश और मुगल वास्तुशैली का संगम है और अब इसमें चित्र, पांडुलिपियाँ और औपनिवेशिक काल के ऐतिहासिक वस्तुएं रखी गई हैं।',
+    description_kn: 'ವಿಕ್ಟೋರಿಯಾ ಸ್ಮಾರಕ ಕೋಲ್ಕತ್ತಾದಲ್ಲಿ 1906 ರಿಂದ 1921 ರವರೆಗೆ ರಾಣಿ ವಿಕ್ಟೋರಿಯಾದ ಸ್ಮರಣಾರ್ಥ ನಿರ್ಮಿಸಲಾದ ಮರ್ಮರ್ ಸ್ಮಾರಕ. ಇದು ಬ್ರಿಟಿಷ್ ಮತ್ತು ಮುಘಲ್ ವಾಸ್ತುಶೈಲಿಗಳ ಮಿಶ್ರಣವನ್ನು ತೋರಿಸುತ್ತದೆ ಮತ್ತು ಈಗ ಚಿತ್ರಗಳು, ಪಂಡುಲಿಪಿಗಳು ಮತ್ತು ವಸಾಹತ ಕಾಲದ ಐತಿಹಾಸಿಕ ವಸ್ತುಗಳಸಹಿತ ಮ್ಯೂಸಿಯಂಗಳನ್ನು ಹೊಂದಿದೆ.',
+    category: 'monument',
+    builtYear: '1921',
+    dynasty: 'British Raj',
+    architecturalStyle: 'Indo-Saracenic',
+    images: ['/images/Victoria_Memorial.jpg']
+  },
+
+  // Hyderabad
+  {
+    id: '13',
+    name: 'Charminar',
+    latitude: 17.3616,
+    longitude: 78.4747,
+    description_en: 'Charminar is a 16th-century monument and mosque built by Muhammad Quli Qutb Shah in Hyderabad. Its four towering minarets and central square remain an emblem of the old city’s Islamic heritage and bustling trade.',
+    description_hi: 'चारमीनार हैदराबाद में 16वीं सदी का स्मारक और मस्जिद है, जिसे मुहम्मद कुली कुतुब शाह ने बनवाया था। इसके चार ऊंचे मिनारे और मध्य चौक पुराने शहर की इस्लामी विरासत और व्यापारिक जीवन का प्रतीक हैं।',
+    description_kn: 'ಚಾರ್ಮಿನಾರ್ ಹೈದರಾಬಾದ್‌ನ 16ನೇ ಶತಮಾನದಲ್ಲಿ ಮುಹಮ್ಮದ್ ಕುಲಿ ಕುತಬ್ ಶಾ ನಿರ್ಮಿಸಿದ ಸ್ಮಾರಕ ಮತ್ತು ಮಸೀದಿ. ಅದರ ನಾಲ್ಕು ಎತ್ತರದ ಮಿನಾರೆ ಮತ್ತು ಮಧ್ಯದ ಚೌಕ ಹಳೆಯ ನಗರದ ಇಸ್ಲಾಮಿಕ್ ಪಾರಂಪರ್ಯ ಮತ್ತು ವ್ಯಾಪಾರ ಜೀವಿತಾವಸ್ಥೆಯ ಸಂಕೇತ.',
+    category: 'monument',
+    builtYear: '1591',
+    dynasty: 'Qutb Shahi',
+    architecturalStyle: 'Indo-Islamic',
+    images: ['/images/Charminar.jpg']
+  },
+
+  // Bengaluru
+  {
+    id: '14',
+    name: 'Bangalore Fort',
+    latitude: 12.9634,
+    longitude: 77.5736,
+    description_en: 'Bangalore Fort began as a mud fort built by Kempe Gowda I in 1537 and was rebuilt in stone by Hyder Ali and Tipu Sultan. It witnessed the rise of the Mysore kingdom and the battles that shaped south Indian politics under the Deccan sultanates and British influence.',
+    description_hi: 'बैंगलोर किला 1537 में केंपे गौड़ा प्रथम द्वारा मिट्टी का किला था और बाद में हैदर अली व टीपू सुल्तान ने इसे पत्थर से पुनर्निर्मित किया। इसने मैसूर राज्य के उदय और देकान सल्तनतों तथा ब्रिटिश प्रभाव के तहत दक्षिण भारतीय राजनीति को आकार देने वाली लड़ाइयों को देखा।',
+    description_kn: 'ಬೆಂಗಳೂರು ಕೋಟೆ 1537 ರಲ್ಲಿ ಕೆಂಪೆ ಗೌಡ I ನಿರ್ಮಿಸಿದ ಮಣ್ಣಿನ ಕೋಟೆ ಆಗಿತ್ತು ಮತ್ತು ನಂತರ ಹೈದರ ಅಲಿ ಮತ್ತು ಟಿಪ್ಪು ಸುಲ್ತಾನ್ ಅದನ್ನು ಕಲ್ಲಿನಿಂದ ಮರುನಿರ್ಮಿಸಿದರು. ಇದು ಮೈಸೂರು ಸಾಮ್ರಾಜ್ಯದ ಏರಳಿಕೆಯನ್ನು ಮತ್ತು ಡೆಕ್ಕನ್ ಸಾಕ್ಷರು ಮತ್ತು ಬ್ರಿಟೀಶ್ ಪ್ರಭಾವದಡಿ ದಕ್ಷಿಣ ಭಾರತೀಯ ರಾಜಕಾರಣದ ಯುದ್ಧಗಳನ್ನು ಕಂಡಿತು.',
+    category: 'fort',
+    builtYear: '1537',
+    dynasty: 'Vijayanagara / Wodeyar',
+    architecturalStyle: 'Medieval fortress',
+    images: ['/images/Bangalore_Fort.jpg']
+  },
+
+  // More places...
+  {
+    id: '15',
+    name: 'Konark Sun Temple',
+    latitude: 19.8876,
+    longitude: 86.0945,
+    description_en: 'Konark Sun Temple was built in the 13th century as a monumental chariot dedicated to Surya, the sun god. Its carved wheels, horses and sculpted deities celebrate the movement of the sun and the craftsmanship of Odisha’s Kalinga artisans.',
+    description_hi: 'कोणार्क सूर्य मंदिर 13वीं सदी में सूर्य देवता को समर्पित एक विशाल रथ के रूप में बनाया गया था। इसके खोदी हुई पहिये, घोड़े और मूर्तिमय देवताएं सूर्य की गति और ओडिशा के कालिंगा शिल्पकारों की कला को मनाती हैं।',
+    description_kn: 'ಕೊನಾರ್ಕ್ ಸೂರ್ಯ ದೇವಸ್ಥಾನ 13ನೇ ಶತಮಾನದಲ್ಲಿ ಸೂರ್ಯ ದೇವರಿಗೆ ಸಮರ್ಪಿತ ಭವ್ಯ ರಥವಾಗಿ ನಿರ್ಮಿಸಲಾಯಿತು. ಅದರ ಹೊದಿಕೆಗೊಳ್ಳಲಾದ ಚಕ್ರಗಳು, ಕುದುರೆಗಳು ಮತ್ತು ಶಿಲ್ಪಿತ ದೇವತೆಗಳು ಸೂರ್ಯನ ಚಲನೆ ಮತ್ತು ಒಡಿಶಾ ಕಳಿಂಗ ಕಲಾಕಾರರ ಶಿಲ್ಪಶೈಲಿಯನ್ನು ಆಚರಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1250',
+    dynasty: 'Eastern Ganga',
+    architecturalStyle: 'Kalinga',
+    images: ['/images/Konark_Sun_Temple.jpg']
+  },
+  {
+    id: '16',
+    name: 'Mysore Palace',
+    latitude: 12.3051,
+    longitude: 76.6551,
+    description_en: 'Mysore Palace is the royal residence of the Wadiyar dynasty, rebuilt in 1912 after a fire destroyed the earlier structure. Its lavish Durbar Hall, carved ceilings and illuminated Dasara procession embody the grandeur of Mysore’s courtly culture.',
+    description_hi: 'मैसूर पैलेस वाडियार वंश का शाही निवास है, जिसे 1912 में एक आग के बाद फिर से बनाया गया था। इसकी शानदार दरबार हॉल, नक्काशीदार छतें और प्रकाशित दशहरा जुलूस मैसूर की राजसी संस्कृति की भव्यता को दर्शाते हैं।',
+    description_kn: 'ಮೈಸೂರು ಅರಮನೆ ವಾಡಿಯಾರ್ ವಂಶದ ಶಾಹಿ ನಿವಾಸ, 1912 ರಲ್ಲಿ ಹಾನಿಯಾದ ಹಳೆ ಕಟ್ಟಡದ ನಂತರ ಮರುನಿರ್ಮಿಸಲಾಯಿತು. ಅದರ ಐಶ್ವರ್ಯಮಯ ದರಬಾರ್ ಹಾಲ್, ಶಿಲ್ಪಿತ ڇಾವಣುಗಳು ಮತ್ತು ಬೆಳಗುವ ಸದ್ದರಸ ಹಬ್ಬ ಮೈಸೂರಿನ ಕಾಲ್ಪನಿಕ ಸಂಸ್ಕೃತಿಯ ಅಭಿವ್ಯಕ್ತಿಯನ್ನು ತೋರಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '1912',
+    dynasty: 'Wadiyar',
+    architecturalStyle: 'Indo-Saracenic',
+    images: ['/images/Mysore_Palace.jpg']
+  },
+  {
+    id: '17',
+    name: 'Golden Temple',
+    latitude: 31.6200,
+    longitude: 74.8765,
+    description_en: 'Golden Temple, also called Harmandir Sahib, is the holiest shrine of Sikhism and is known for its gold-plated sanctum and sewa kitchen. Its central pool and welcoming langar express Sikh values of equality, service and spiritual devotion.',
+    description_hi: 'गोल्डन टेम्पल, जिसे हरमंदिर साहिब भी कहा जाता है, सिख धर्म का सबसे पवित्र मंदिर है और इसके सोने से ढके गर्भगृह और सेवा кухни के लिए जाना जाता है। इसका केंद्रीय पानी का तालाब और खुला लंगर सिख मूल्यों — समानता, सेवा और आध्यात्मिक भक्ति — को व्यक्त करते हैं।',
+    description_kn: 'ಗೋಲ್ಡನ್ ಟೆಂಪಲ್ ಅಥವಾ ಹರ್ಮಂದಿರ್ ಸಾಹಿಬ್ ಸಿಖ್ ಧರ್ಮದ ಅತ್ಯಂತ ಪವಿತ್ರ ತಾಣವಾಗಿದೆ ಮತ್ತು ಅದರ ಚಿನ್ನದ ಆಚರಣೆಗೊಳ್ಳಲಾದ ಗುಹ ಮತ್ತು ಸೇವಾ ಅಡುಗೆಮನೆಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಅದರ ಕೇಂದ್ರ ಫೇಮ್ ಮತ್ತು ಸಹಜ ಲಂಗರ್ ಸಿದ್ಧಾಂತಗಳು ಸಮಾನತೆ, ಸೇವೆ ಮತ್ತು ಆಧ್ಯಾತ್ಮಿಕ ಭಕ್ತಿ ತೋರಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1604',
+    dynasty: 'Sikh Gurus',
+    architecturalStyle: 'Sikh',
+    images: ['/images/Golden_Temple.jpg']
+  },
+  {
+    id: '18',
+    name: 'Sanchi Stupa',
+    latitude: 23.4791,
+    longitude: 77.7389,
+    description_en: 'Sanchi Stupa is one of India’s oldest stone monuments, first commissioned by Emperor Ashoka in the 3rd century BCE. Its carved toranas depict scenes from the Buddha’s life and early Buddhist philosophy, making it a vital pilgrimage site for Buddhist followers.',
+    description_hi: 'सांची स्तूप भारत के सबसे पुराने पत्थर स्मारकों में से एक है, जिसे तीसरी शताब्दी ईसा पूर्व में सम्राट अशोक ने बनवाया था। इसके नक्काशीदार तोरण बुद्ध के जीवन और प्रारंभिक बौद्ध दर्शन के दृश्यों को चित्रित करते हैं, जो इसे बौद्ध अनुयायियों के लिए एक महत्वपूर्ण तीर्थस्थल बनाता है।',
+    description_kn: 'ಸಾಂಚಿ ಸ್ತೂಪ ಭಾರತದ ಅತಿ ಹಳೆಯ ಶಿಲಾ ಸ್ಮಾರಕಗಳಲ್ಲಿ ಒಂದಾಗಿದೆ, ಕ್ರಿ.ಪೂ. 3ನೆ ಶತಮಾನದಲ್ಲಿ ಚಕ್ರವಾರ್ತೆ ಅಶೋಕನಿಂದ ನಿರ್ಮಿಸಲಾಯಿತು. ಅದರ ಶಿಲ್ಪಿತ ತೋರಣಗಳು ಬುದ್ಧನ ಜೀವನ ಮತ್ತು ಪ್ರಾಚೀನ ಬೌದ್ಧ ತತ್ತ್ವದ ದೃಶ್ಯಗಳನ್ನು ಚಿತ್ರಿಸುತ್ತವೆ, ಇದು ಬೌದ್ಧ ಭಕ್ತರಿಗೆ ಪ್ರಮುಖ ಯಾತ್ರಾಸ್ಥಳವಾಗಿದೆ.',
+    category: 'monument',
+    builtYear: '3rd century BCE',
+    dynasty: 'Maurya / Satavahana',
+    architecturalStyle: 'Buddhist',
+    images: ['/images/Sanchi_Stupa.jpg']
+  },
+  {
+    id: '19',
+    name: 'Ajanta Caves',
+    latitude: 20.5519,
+    longitude: 75.7033,
+    description_en: 'Ajanta Caves are a UNESCO World Heritage site of 29 rock-cut Buddhist caves dating from the 2nd century BCE to the 6th century CE. Their vivid murals and sculptures preserve ancient stories of Buddha, bodhisattvas and life along India’s early trade routes.',
+    description_hi: 'अजंता गुफाएं 2वीं शताब्दी ईसा पूर्व से 6वीं शताब्दी ईस्वी तक की बौद्ध चट्टानी गुफाओं का यूनेस्को विश्व धरोहर स्थल हैं। उनकी जीवंत भित्ति चित्र और मूर्तियां बुद्ध, बोधिसत्त्व और भारत के प्राचीन व्यापार मार्गों पर जीवन की कहानियों को संरक्षित करती हैं।',
+    description_kn: 'ಅಜಂತಾ ಗುಹೆಗಳು ಕ್ರಿ. ಪೂ. 2ನೇ ಶತಮಾನದಿಂದ ಕ್ರಿ. ಶ. 6ನೇ ಶತಮಾನದವರೆಗೆ ಬುದ್ಧ ಬೋಧನಾ ಶಿಲಾ ಗುಹೆಗಳ ಯುನೆಸ್ಕೊ ವರ್ಲ್ಡ್ ಹೆರಿಟೇಜ್ ತಾಣ. ಅದರ ಉಜ್ವಲ ಫ್ರೆಸ್ಕೊಗಳು ಮತ್ತು ಶಿಲ್ಪಗಳು ಬುದ್ಧ, ಬೋಧಿಸತ್ವ ಮತ್ತು ಭಾರತೀಯ ಪ್ರಾರಂಭಿಕ ವ್ಯಾಪಾರ ಮಾರ್ಗಗಳ ಜೀವನ ಕಥೆಗಳನ್ನು ಸಂರಕ್ಷಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '2nd century BCE',
+    dynasty: 'Satavahana',
+    architecturalStyle: 'Buddhist rock-cut',
+    images: ['/images/Ajanta_Caves.jpg']
+  },
+  {
+    id: '20',
+    name: 'Ellora Caves',
+    latitude: 20.0269,
+    longitude: 75.1779,
+    description_en: 'Ellora Caves are a rock-cut complex of 34 monuments carved between the 6th and 10th centuries, representing Hindu, Buddhist and Jain faiths. The cave-temple of Kailasa is a single stone monolith carved downward from the hillside, a marvel of ancient Indian engineering.',
+    description_hi: 'एलोरा गुफाएं 6वीं से 10वीं शताब्दी के बीच निर्मित 34 शिलापरक स्मृतियों का एक समूह हैं, जो हिंदू, बौद्ध और जैन धर्मों का प्रतिनिधित्व करते हैं। कैलाश मंदिर पहाड़ी से नीचे एक ही चट्टान से तराशा गया मोनोलिथ है, जो प्राचीन भारतीय इंजीनियरिंग का अद्भुत उदाहरण है।',
+    description_kn: 'ಎಲ್ಲೋರಾ ಗುಹೆಗಳು 6ನೇ ರಿಂದ 10ನೇ ಶತಮಾನದವರೆಗೆ ನಿರ್ಮಿಸಲಾದ 34 ಶಿಲಾ ಸ್ಮಾರಕಗಳ ಸಂಕೀರ್ಣ, ಹಿಂದೂ, ಬೌದ್ಧ ಮತ್ತು ಜೈನ ಧರ್ಮಗಳನ್ನು ಪ್ರತಿನಿಧಿಸುತ್ತವೆ. ಕೈಲಾಸದ ಗುಹೆಯ ದೇವಸ್ಥಾನವು ಬಂಡೆಯಿಂದ ಕೆಳಕ್ಕೆ ತೆಗೆಯಲಾದ ಏಕಶಿಲಾ ಮೊನೋಲಿಥ್, ಪ್ರಾಚೀನ ಭಾರತೀಯ ಎಂಜಿನಿಯರಿಂಗ್ ಅದ್ಭುತ.',
+    category: 'monument',
+    builtYear: '6th-10th century',
+    dynasty: 'Chalukya / Rashtrakuta',
+    architecturalStyle: 'Rock-cut',
+    images: ['/images/Ellora_Caves.jpg']
+  },
+  {
+    id: '21',
+    name: 'Mahabalipuram',
+    latitude: 12.6269,
+    longitude: 80.1928,
+    description_en: 'Mahabalipuram is a UNESCO World Heritage coastal town known for its Pallava-era rock-cut temples, monolithic rathas and the Shore Temple. Its sculpted reliefs and open-air carvings reveal the artistic and maritime culture of 7th-century South India.',
+    description_hi: 'महाबलीपुरम एक यूनेस्को विश्व धरोहर तटीय शहर है, जो पल्लव कालीन शिलापरक मंदिरों, एकल शिला रथों और शोर मंदिर के लिए प्रसिद्ध है। इसकी मूर्तिकला नक्काशियां और खुली हवा में उत्कीर्ण चित्र 7वीं सदी के दक्षिण भारत की कलात्मक और समुद्री संस्कृति को दर्शाती हैं।',
+    description_kn: 'ಮಹಾಬಲಿಪುರಂ ಯುನೆಸ್ಕೋ ವಿಶ್ವ ಹೇರಿಟೇಜ್ ಕರಾವಳಿಯ ಪಟ್ಟಣ, ಪಲ್ಲವ ಯುಗದ ಶಿಲಾಶಿಲ್ಪ ದೇವಸ್ಥಾನಗಳು, ಏಕಶಿಲಾ ರಥಗಳು ಮತ್ತು ಶೋರ್ ದೇವಸ್ಥಾನದಿಗಾಗಿ ಹೆಸರು ಹೊಂದಿದೆ. ಅದರ ಶಿಲ್ಪಿತ ರಿಲೀಫ್‌ಗಳು ಮತ್ತು ಹೊರಾಂಗಣ ನಕುಶಾಲೆಯಲ್ಲಿನ ಶಿಲ್ಪಗಳು 7ನೇ ಶತಮಾನದ ದಕ್ಷಿಣ ಭಾರತದ ಕಲಾತ್ಮಕ ಮತ್ತು ಸಮುದ್ರ ಸಂಸ್ಕೃತಿಯನ್ನು ಬಿಂಬಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '7th century',
+    dynasty: 'Pallava',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Mahabalipuram.jpg']
+  },
+  {
+    id: '22',
+    name: 'Khajuraho Temples',
+    latitude: 24.8318,
+    longitude: 79.9192,
+    description_en: 'Khajuraho Temples are renowned for their detailed stone sculptures of gods, dancers and intimate themes, created by the Chandela dynasty in the 10th-11th centuries. They represent a celebration of life, spirituality and the human form in North Indian temple art.',
+    description_hi: 'खजुराहो मंदिर अपने विस्तृत पत्थर की मूर्तियों के लिए प्रसिद्ध हैं, जिनमें देवता, नर्तकियां और अंतरंग जीवन के दृश्य शामिल हैं, जिन्हें 10वीं-11वीं शताब्दी में चंदेला वंश ने बनाया था। ये जीवन, आध्यात्मिकता और मानव रूप के उत्सव को उत्तर भारतीय मंदिर कला में दर्शाते हैं।',
+    description_kn: 'ಖಜುರಾಹೋ ದೇವಸ್ಥಾನಗಳು ದೇವತೆಗಳು, ನೃತ್ಯಿಗಳು ಮತ್ತು ಭೌತಿಕ ಜೀವನದ ನಿಖರ ಶಿಲ್ಪಗಳಿಗೆ ಖ್ಯಾತ, 10ನೇ-11ನೇ ಶತಮಾನದಲ್ಲಿ ಚಂದೇಲ ವಂಶದವರು ನಿರ್ಮಿಸಿದರು. ಅವು ಉತ್ತರ ಭಾರತೀಯ ದೇವಾಲಯ ಕಲೆದಲ್ಲಿ ಜೀವನ, ಆಧ್ಯಾತ್ಮಿಕತೆ ಮತ್ತು ಮಾನವ ರೂಪದ ಆಚರಣೆಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1000',
+    dynasty: 'Chandela',
+    architecturalStyle: 'Nagara',
+    images: ['/images/Khajuraho_Temples.jpg']
+  },
+  {
+    id: '23',
+    name: 'Fatehpur Sikri',
+    latitude: 27.0910,
+    longitude: 77.6611,
+    description_en: 'Fatehpur Sikri was built by Akbar in the late 16th century as his capital, blending Persian, Hindu and Islamic design. The city was abandoned after a few decades, leaving behind a remarkably preserved red sandstone complex with palaces, mosques and courtyards.',
+    description_hi: 'फतेहपुर सीकरी को 16वीं शताब्दी के अंत में अकबर ने अपनी राजधानी के रूप में बनाया, जिसमें फ़ारसी, हिंदू और इस्लामी डिज़ाइन का मिश्रण है। यह शहर कुछ दशकों बाद छोड़ दिया गया, जिससे महलों, मस्जिदों और आंगनों वाला लाल बलुआ पत्थर का एक अत्यंत संरक्षित परिसर बचा।',
+    description_kn: 'ಫತೆಹ್ ಪುರ್ ಸಿಕ್ರಿ 16ನೇ ಶತಮಾನದ ಕೊನೆಯಲ್ಲಿ ಅಕ್ಬರ್ ತನ್ನ ರಾಜಧಾನಿಯಾಗಿ ನಿರ್ಮಿಸಿದ, ಪರ್ಶಿಯನ್, ಹಿಂದೂ ಮತ್ತು ಇಸ್ಲಾಮಿಕ್ ವಿನ್ಯಾಸವನ್ನು ಮಿಶ್ರಿತಗೊಳಿಸಿ. ಎರಡು ದಶಕಗಳ ಒಳಗೆ ಇದನ್ನು ಬಿಟ್ಟುಬಿಟ್ಟಿದ್ದರಿಂದ ಅರಮನೆಗಳು, ಮಸೀದಿಗಳು ಮತ್ತು ಆವರಣಗಳೊಂದಿಗೆ ಒಂದು ಅದ್ಭುತವಾಗಿ ಉಳಿದ ಕೆಂಪು ಬಲ್ಲಿಯ ಸಂಕೀರ್ಣ ಉಳಿದಿದೆ.',
+    category: 'monument',
+    builtYear: '1571',
+    dynasty: 'Mughal',
+    architecturalStyle: 'Indo-Islamic',
+    images: ['/images/Fatehpur_Sikri.jpg']
+  },
+  {
+    id: '24',
+    name: 'Amer Fort',
+    latitude: 26.9855,
+    longitude: 75.8513,
+    description_en: 'Amer Fort is the royal fort-palace of the Kachwaha Rajputs, known for its Sheesh Mahal, water gardens and fortified ramparts overlooking Maota Lake. Its halls and private chambers preserve the ceremonial life and military strength of 16th-century Rajputana.',
+    description_hi: 'आमेर किला कचवाहा राजपूतों का शाही किले-आवास है, जो शीश महल, जल उद्यानों और मोटो झील पर नजर रखने वाली बंकर दीवारों के लिए जाना जाता है। इसके हॉल और निजी कमरे 16वीं सदी के राजपूताना के औपचारिक जीवन और सैन्य सामर्थ्य को संरक्षित करते हैं।',
+    description_kn: 'ಆಮೇರ್ ಕೋಟೆ ಕಚ್ವಾಹಾ ರಾಜಪೂತ್ ಶಾಹಿ ಕೋಟೆ-ಅರಮನೆ, ಶೀಶ್ ಮಹಲ್, ನೀರಿನ ಉದ್ಯಾನಗಳು ಮತ್ತು ಮಾವಟಾ ಕೆರೆಯ ಮೇಲೆ ನೋಡಿಕೊಳ್ಳುವ ಬಲಿಷ್ಠ ಗೋಡೆಗಳಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಅದರ ಹಾಲ್‌ಗಳು ಮತ್ತು ಖಾಸಗಿ ಕೊಠಡಿಗಳು 16ನೇ ಶತಮಾನದ ರಾಜಪುತನದ ವೈಭವ ಮತ್ತು ಸೈನಿಕ ಬಲವನ್ನು ಉಳಿಸಿಕೊಂಡಿವೆ.',
+    category: 'fort',
+    builtYear: '1592',
+    dynasty: 'Kachwaha Rajput',
+    architecturalStyle: 'Rajput-Mughal',
+    images: ['/images/Amer_Fort.jpg']
+  },
+  {
+    id: '25',
+    name: 'Jaisalmer Fort',
+    latitude: 26.9124,
+    longitude: 70.9136,
+    description_en: 'Jaisalmer Fort is a living sandstone fort in the Thar Desert that still houses families, shops and temples. Founded in 1156, its ramparts overlook desert trade routes and its golden stone walls glow at sunrise and sunset.',
+    description_hi: 'जैसलमेर किला थार रेगिस्तान में एक जीवंत बलुआ पत्थर का किला है, जिसमें अभी भी परिवार, दुकानें और मंदिर रहते हैं। 1156 में स्थापित, इसकी किलेबंदी रेगिस्तान के व्यापार मार्गों को देखती है और सूर्योदय तथा सूर्यास्त में इसकी सुनहरी दीवारें चमकती हैं।',
+    description_kn: 'ಜೈಸಲ್ಮೇರ್ ಕೋಟೆ ಥಾರ್ ಮರಳುಬೀರಿನಲ್ಲಿರುವ ಜೀವಂತ ಬಲ್ಲಿಯ ಕೋಟೆ, ಇದರಲ್ಲಿ ಇನ್ನೂ ಕುಟುಂಬಗಳು, ಅಂಗಡಿಗಳು ಮತ್ತು ದೇವಸ್ಥಾನಗಳು ಇದ್ದವೆ. 1156 ರಲ್ಲಿ ಸ್ಥಾಪಿತವಾದ ಇದೆಯ, ಅದರ ಗೋಡೆಗಳು ಮರಳು ವ್ಯಾಪಾರ ಮಾರ್ಗಗಳನ್ನು ನೋಡುತ್ತವೆ ಮತ್ತು ಸೂರ್ಯೋದಯ-ಸೂರ್ಯಾಸ್ತ ವೇಳೆಗೆ ಚಿನ್ನದಂತೆ ಹೊಳೆಯುತ್ತವೆ.',
+    category: 'fort',
+    builtYear: '1156',
+    dynasty: 'Rajput',
+    architecturalStyle: 'Rajput',
+    images: ['/images/Jaisalmer_Fort.jpg']
+  },
+  {
+    id: '26',
+    name: 'Meenakshi Temple',
+    latitude: 9.9195,
+    longitude: 78.1193,
+    description_en: 'Meenakshi Temple is a sprawling temple complex in Madurai built around twin shrines to Goddess Meenakshi and Lord Sundareswarar. Its multi-tiered gopurams, painted sculptures and vibrant festivals make it the spiritual heart of southern Tamil Nadu.',
+    description_hi: 'मीनाक्षी मंदिर मदुरै में फैला हुआ मंदिर परिसर है, जिसमें देवी मीनाक्षी और भगवान सुंदरेश्वर के दो मंदिर शामिल हैं। इसकी बहु-स्तरीय गोपुरम, रंगीन मूर्तियां और जीवंत उत्सव इसे दक्षिण तमिलनाडु का आध्यात्मिक केंद्र बनाते हैं।',
+    description_kn: 'ಮೀನಾಕ್ಷಿ ದೇವಸ್ಥಾನ ಮದುರೈಯಲ್ಲಿ ವಿಸ್ತಾರವಾದ ದೇವಸ್ಥಾನ ಸಂಕೀರ್ಣ, ದೇವಿ ಮೀನಾಕ್ಷಿ ಮತ್ತು ಭಗವಾನ್ ಸುಂದರೇಶ್ವರರ ಧ್ವನಿ ಶ್ರೇಣಿಗಳನ್ನು ಒಳಗೊಂಡಿದೆ. ಅದರ ಬಹುಮಟ್ಟದ ಗೋಪ್ರ, ಚಿತ್ರಗೊಂಡ ಶಿಲ್ಪಗಳು ಮತ್ತು ಉಲ್ಲಾಸಮಯ ಹಬ್ಬಗಳು ಇದನ್ನು ದಕ್ಷಿಣ ತಮಿಳುನಾಡಿನ ಆಧ್ಯಾತ್ಮಿಕ ಹೃದಯವಾಗಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '12th century',
+    dynasty: 'Pandya / Nayak',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Meenakshi_Temple.jpg']
+  },
+  {
+    id: '27',
+    name: 'Brihadeeswarar Temple',
+    latitude: 10.7828,
+    longitude: 79.1315,
+    description_en: 'Brihadeeswarar Temple, also called Peruvudaiyar Kovil, is an 11th-century Chola temple with one of the tallest vimanas in India. Its massive Nandi statue, frescoes and inscriptions celebrate the power and devotion of Chola kings.',
+    description_hi: 'बृहदीश्वरर मंदिर, जिसे पेरुवुदैयार कोविल भी कहा जाता है, एक 11वीं सदी का चोल मंदिर है जिसमें भारत के सबसे ऊंचे वimana में से एक है। इसकी विशाल नंदी प्रतिमा, भित्ति चित्र और शिलालेख चोल राजाओं की शक्ति और भक्ति का जश्न मनाते हैं।',
+    description_kn: 'ಬೃಹದೀಶ್ವರರ್ ದೇವಸ್ಥಾನ, ಪೆರುವುದೈಯರ್ ಕೋವಿಲ್ ಎಂದು ಕರೆಯಲ್ಪಡುವುದು, 11ನೇ ಶತಮಾನದ ಚೋಳ ದೇವಸ್ಥಾನ ಮತ್ತು ಭಾರತದಲ್ಲಿನ ಅತ್ಯಂತ ಎತ್ತರದ ವಿಮಾನಗಳಲ್ಲಿ ಒಂದಿದೆ. ಇದರ ಭಾರಿ ನಂದಿ ಪ್ರತಿಮೆ, ಫ್ರೆಸ್ಕೊಗಳು ಮತ್ತು ಶಿಲालेಖಗಳು ಚೋಳ ರಾಜರ ಶಕ್ತಿ ಮತ್ತು ಭಕ್ತಿಯನ್ನು ಆಚರಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1010',
+    dynasty: 'Chola',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Brihadeeswara_Temple.jpg']
+  },
+  {
+    id: '28',
+    name: 'Rani ki Vav',
+    latitude: 23.8879,
+    longitude: 72.1125,
+    description_en: 'Rani ki Vav is an 11th-century stepwell built in Patan by Queen Udayamati to honor her husband, King Bhimdev I. Its seven descending levels, ornate sculptures and water channels reflect the engineering and artistic achievements of Gujarat’s Solanki period.',
+    description_hi: 'रानी की वाव पाटन में 11वीं सदी की एक बावड़ी है जिसे रानी उद्यमती ने अपने पति राजा भीमदेव प्रथम को सम्मान देने के लिए बनवाया था। इसके सात नीचे उतरते स्तर, सजावटी मूर्तियां और जलमार्ग गुजरात की सोलंकी काल की इंजीनियरिंग और कला को दर्शाते हैं।',
+    description_kn: 'ರಾಣಿ ಕಿ ವಾವ್ ಪಟಣದಲ್ಲಿ 11ನೇ ಶತಮಾನದಲ್ಲಿ ರಾಣಿ ಉದಯಮತಿಯನ್ನು ರಾಜ ಭೀಮದೇವ I ಯನ್ನು ಗೌರವಿಸಲು ನಿರ್ಮಿಸಿದ ಜಳಕ್ಕಚ್ಚಿ. ಅದರ ಏಳು ಇಳಿಯುವ ಮಟ್ಟಗಳು, ಅಲಂಕೃತ ಶಿಲ್ಪಗಳು ಮತ್ತು ಜಲಚಾನಲ್ಗಳು ಗುಜರಾತಿನ ಸೋಲಂಕಿ ಯುಗದ ಎಂಜಿನಿಯರಿಂಗ್ ಮತ್ತು ಕಲಾತ್ಮಕ ಸಾಧನೆಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '1063',
+    dynasty: 'Solanki',
+    architecturalStyle: 'Maru-Gurjara',
+    images: ['/images/Rani_Ki_Vav.jpg']
+  },
+  {
+    id: '29',
+    name: 'Chittorgarh Fort',
+    latitude: 24.8877,
+    longitude: 74.6240,
+    description_en: 'Chittorgarh Fort is one of India’s largest forts and a legendary symbol of Rajput courage. Its hilltop citadel includes palaces, temples, enormous gates and towers that witnessed historic sieges and the stories of Rani Padmini, Maharana Pratap and heroic sacrifice.',
+    description_hi: 'चित्तौड़गढ़ किला भारत के सबसे बड़े किलों में से एक है और राजपूत साहस का एक पौराणिक प्रतीक है। इसके पहाड़ी किले में महल, मंदिर, विशाल द्वार और मीनारें हैं जिन्होंने ऐतिहासिक घेराबंदी और रानी पद्मिनी, महाराणा प्रताप और वीर बलिदान की कहानियों को देखा।',
+    description_kn: 'ಚಿತ್ತೋರಗಢ ಕೋಟೆ ಭಾರತದ ಅತ್ಯಂತ ದೊಡ್ಡ ಕೋಟೆಗಳಲ್ಲಿ ಒಂದು ಮತ್ತು ರಾಜಪುತ್ ಧೈರ್ಯದ ಪೌರಾಣಿಕ ಸಂಕೇತ. ಅದರ ಪರ್ವತದ ಕೋಟೆಯಲ್ಲಿ ಅರಮನೆಗಳು, ದೇವಸ್ಥಾನಗಳು, ಭಾರೀ ಬಾಗಿಲುಗಳು ಮತ್ತು ಗೋಪುರಗಳು ಇವೆ, ಅವು ಐತಿಹಾಸಿಕ ಶರಣಾಗುಮೆ ಮತ್ತು ರಾಣಿ ಪದ್ಮಿನಿ, ಮೆರಣಾ ಪ್ರತಾಪ್ ಮತ್ತು ಶೌರ್ಯ ತ್ಯಾಗದ ಕಥೆಗಳನ್ನು ಕಂಡಿವೆ.',
+    category: 'fort',
+    builtYear: '7th century',
+    dynasty: 'Guhila / Sisodia',
+    architecturalStyle: 'Rajput fortress',
+    images: ['/images/Chittogarh_Fort.jpg']
+  },
+  {
+    id: '30',
+    name: 'Golconda Fort',
+    latitude: 17.3833,
+    longitude: 78.4011,
+    description_en: 'Golconda Fort is the ruined citadel of the Qutb Shahi kingdom, famous for its acoustic marvels and diamond wealth. Its layered defenses, palace remains and the Whispering Gallery reflect the region’s prosperity during the 16th and 17th centuries.',
+    description_hi: 'गोलकोंडा किला कुतुब शाही राज्य का खंडहरित किला है, जो अपनी ध्वनि चमत्कारों और हीरे की संपदा के लिए प्रसिद्ध है। इसकी परतदार रक्षा, महल के अवशेष और फुसफुसाने वाला गैलरी 16वीं और 17वीं शताब्दी के दौरान क्षेत्र की समृद्धि को दर्शाते हैं।',
+    description_kn: 'ಗೋಲ್ಕೊಂಡ ಕೋಟೆ ಕುತಬ್ ಶಾಹಿ ರಾಜ್ಯದ ನಶವಾಗಿರುವ ಕೋಟೆ, ಅದರ ಶಬ್ದಾತ್ಮಕ ಅಚ್ಚರಿ ಮತ್ತು ವಜ್ರ ಸಂಪತ್ತಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಅದರ ಪದರಬದ್ಧ ರಕ್ಷಣಾತ್ಮಕ ವ್ಯವಸ್ಥೆ, ಅರಮನೆ ಅವಶೇಷಗಳು ಮತ್ತು ಕುಗುಂಪು ಗ್ಯಾಲರಿಯು 16ನೇ-17ನೇ ಶತಮಾನಗಳಲ್ಲಿ ಈ ಪ್ರದೇಶದ ಸಮ್ಮೃದ್ಧಿಯನ್ನು ತೋರಿಸುತ್ತವೆ.',
+    category: 'fort',
+    builtYear: '1518',
+    dynasty: 'Qutb Shahi',
+    architecturalStyle: 'Fortified citadel',
+    images: ['/images/Golconda_fort.jpg']
+  },
+  {
+    id: '31',
+    name: 'Elephanta Caves',
+    latitude: 18.9633,
+    longitude: 72.9311,
+    description_en: 'Elephanta Caves are rock-cut temples on an island near Mumbai dating from the 5th to 8th centuries. Their carved panels depict the great myths of Shiva and showcase early medieval maritime culture connected to the Arabian Sea.',
+    description_hi: 'एलिफैंटा गुफाएं मुंबई के पास एक द्वीप पर स्थित शिलापरक मंदिर हैं, जो 5वीं से 8वीं शताब्दी के हैं। इनके नक्काशीदार पैनल शिव के महान मिथकों को दर्शाते हैं और अरब सागर से जुड़े प्रारंभिक मध्यकालीन समुद्री संस्कृति को प्रदर्शित करते हैं।',
+    description_kn: 'ಏಲಿಫೆಂಟಾ ಗುಹೆಗಳು ಮುಂಬೈ ಸಮೀಪದ ದ್ವೀಪದ ಮೇಲೆ ಇರುವ ಶಿಲಾಶಿಲ್ಪ ದೇವಸ್ಥಾನಗಳು, 5ನೇ ರಿಂದ 8ನೇ ಶತಮಾನದವರೆಗೆ. ಅವುಗಳ ಶಿಲ್ಪಿತ ಫಲಕಗಳು ಶಿವನ ಮಹಾ ಪೌರಾಣಿಕ ಕಥೆಗಳನ್ನು ಚಿತ್ರಿಸುತ್ತವೆ ಮತ್ತು ಅರೇಬಿಯನ್ ಸಮುದ್ರದೊಂದಿಗೆ ಜೋಡಣೆಯಿರುವ ಪ್ರಾಚೀನ ಮಧ್ಯಯುಗದ ಸಮುದ್ರ ಸಂಸ್ಕೃತಿಯನ್ನು ತೋರಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '5th-8th century',
+    dynasty: 'Rashtrakuta',
+    architecturalStyle: 'Rock-cut Hindu',
+    images: ['/images/Elephanta_Caves.jpg']
+  },
+  {
+    id: '32',
+    name: 'Badami Caves',
+    latitude: 15.9219,
+    longitude: 75.6769,
+    description_en: 'Badami Caves are a series of Chalukya-era rock-cut temples from the 6th century, carved into sandstone cliffs. Their shrines depict Hindu and Jain iconography with Doric-like pillars and vivid mythological frescoes.',
+    description_hi: 'बदामी गुफाएं 6वीं सदी की चालुक्यकालीन शिलापरक मंदिरों की एक श्रृंखला हैं, जो बलुआ पत्थर की चट्टानों में खुदी हुई हैं। उनके मंदिरों में हिंदू और जैन प्रतिमाएं हैं, साथ ही डोरिक-जैसे स्तंभ और जीवंत पौराणिक भित्ति चित्र हैं।',
+    description_kn: 'ಬಾದಾಮಿ ಗುಹೆಗಳು 6ನೇ ಶತಮಾನದ ಚಾಲುಕ್ಯ ಯುಗದ ಶಿಲಾ ಉತ್ತರ ದೇವಾಲಯಗಳ ಸರಣಿಯಾಗಿದೆ, ಇದು ಮರಳುಗಲ್ಲಿನ ಬೆಟ್ಟದಲ್ಲಿ ತೆಗೆಯಲಾಗಿದೆ. ಅವುಗಳಲ್ಲಿ ಹಿಂದೂ ಮತ್ತು ಜೈನ ಚಿಹ್ನೆಗಳು ಡೋರಿಕ್ ಆಕೃತಿಯ ಸ್ಥಂಭಗಳೊಂದಿಗೆ ಮತ್ತು ಉಜ್ವಲ ಪೌರಾಣಿಕ ಭಿತ್ತಿಚಿತ್ರಗಳೊಂದಿಗೆ ನೋಟಕ್ಕೆ ಬರುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '6th century',
+    dynasty: 'Chalukya',
+    architecturalStyle: 'Dravidian rock-cut',
+    images: ['/images/Badani_Caves.jpg']
+  },
+  {
+    id: '33',
+    name: 'Hampi',
+    latitude: 15.3350,
+    longitude: 76.4600,
+    description_en: 'Hampi was the capital of the Vijayanagara Empire and is famed for its ruined temples, bazaars and royal complexes. Its giant stone monuments, carved pillars and riverfront pavilions reflect the splendour of 14th–16th century South Indian civilization.',
+    description_hi: 'हंपि विजयनगर साम्राज्य की राजधानी थी और इसके खंडहरित मंदिर, बाजार और राजसी परिसर प्रसिद्ध हैं। इसके विशाल शिलापरक स्मारक, नक्काशीदार स्तंभ और नदी के किनारे स्थित मंडप 14वीं–16वीं सदी के दक्षिण भारतीय सभ्य समाज की भव्यता को दर्शाते हैं।',
+    description_kn: 'ಹಂಪಿ ವಿಜಯನಗರ ಸಾಮ್ರಾಜ್ಯದ ರಾಜಧಾನಿ ಆಗಿತ್ತು ಮತ್ತು ಅದರ ನಾಶವಾದ ದೇವಸ್ಥಾನಗಳು, ಬಜಾರುಗಳು ಮತ್ತು ರಾಜಮನೆ ಸಂಕೀರ್ಣಗಳು ಪ್ರಸಿದ್ಧ. ಅದರ ಭಾರಿ ಕಲ್ಲಿನ ಸ್ಮಾರಕಗಳು, ಶಿಲ್ಪಿತ ಸ್ಥಂಭಗಳು ಮತ್ತು ನದಿ ತೀರದ ಮಂದಿರಗಳು 14ನೇ-16ನೇ ಶತಮಾನದ ದಕ್ಷಿಣ ಭಾರತೀಯ ಸಂಸ್ಕೃತಿಯ ವೈಭವವನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '14th century',
+    dynasty: 'Vijayanagara',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Hampi.jpg']
+  },
+  {
+    id: '34',
+    name: 'Srirangam Temple',
+    latitude: 10.8647,
+    longitude: 78.6860,
+    description_en: 'Srirangam Temple is one of India’s largest active Hindu temples, dedicated to Lord Vishnu as Ranganatha. Its concentric enclosures, tall gopurams and historic festivals reflect centuries of Chola, Pandya and Vijayanagara patronage.',
+    description_hi: 'श्रीरंगम मंदिर भारत के सबसे बड़े सक्रिय हिंदू मंदिरों में से एक है, जो भगवान विष्णु को रंगनाध स्वरूप में समर्पित है। इसके समवृत्त आवरण, ऊँचे गोपुरम और ऐतिहासिक उत्सव चोल, पांड़्य और विजयनगर कल्याणकारी छत्रछाया को दर्शाते हैं।',
+    description_kn: 'ಶ್ರೀರಂಗಂ ದೇವಸ್ಥಾನ ಭಾರತದಲ್ಲಿನ ಅತ್ಯಂತ ದೊಡ್ಡ ಕ್ರಿಯಾಶೀಲ ಹಿಂದೂ ದೇವಸ್ಥಾನಗಳಲ್ಲಿ ಒಂದು, ಅದು ರಾಮನಾಥ ರೂಪದ ವಿಷ್ಣುವಿಗೆ ಸಮರ್ಪಿತ. ಅದರ ಸುತ್ತುವರೆದ ಆವರಣೆಗಳು, ಎತ್ತರದ ಗೋಪ್ರಗಳು ಮತ್ತು ಐತಿಹಾಸಿಕ ಹಬ್ಬಗಳು ಚೋಳ, ಪಾಂಡ್ಯ ಮತ್ತು ವಿಜಯನಗರ ಆಶ್ರಯವನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1012',
+    dynasty: 'Chola / Vijayanagara',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Srirangam_Temple.jpg']
+  },
+  {
+    id: '35',
+    name: 'Jallianwala Bagh',
+    latitude: 31.6086,
+    longitude: 74.8723,
+    description_en: 'Jallianwala Bagh is a public garden in Amritsar where British troops fired on unarmed protesters in 1919. Preserved as a memorial, its plaques, martyrs’ well and narrow entrance remind visitors of the sacrifices made in India’s struggle for independence.',
+    description_hi: 'जलियाँवाला बाग़ अमृतसर में एक सार्वजनिक उद्यान है जहां 1919 में ब्रिटिश सैनिकों ने निर्दोष प्रदर्शनकारियों पर गोली चलाई थी। स्मारक के रूप में संरक्षित, इसकी पट्टिकाएं, शहीदों की कुआं और संकरी प्रवेश द्वार आगंतुकों को स्वतंत्रता संग्राम की बलिदान की याद दिलाते हैं।',
+    description_kn: 'ಜಲಿಯನ್ವಾಲಾ ಬಾಗ್ ಅಮೃತಸರದಲ್ಲಿನ ಒಂದು ಸಾರ್ವಜನಿಕ ಉದ್ಯಾನ, 1919 ರಲ್ಲಿ ಬ್ರಿಟಿಷ್ ಪಡೆಗಳು ನಿರ್ದೋಷ ಪ್ರತಿಭಟನಾಕಾರಿಗಳ ಮೇಲೆ ಗುಂಡು ಸಿಕ್ಕಿಸಿತು. ಸ್ಮಾರಕವಾಗಿ ಉಳಿಸಿದ ಇದರ ಫಲಕಗಳು, ಶಹೀದರ ಕಾಲುವೆ ಮತ್ತು ಚಿಕ್ಕ ಪ್ರವೇಶ ದ್ವಾರವು ಭಾರತ ಸ್ವಾತಂತ್ರ್ಯ ಹೋರಾಟದಲ್ಲಿ ನೀಡಲಾದ ಬಲಿದಾನವನ್ನು ನೆನಪಿಸುತ್ತವೆ.',
+    category: 'monument',
+    builtYear: '1919',
+    dynasty: 'British Raj',
+    architecturalStyle: 'Memorial Garden',
+    images: ['/images/Jallianwala_Bagh.jpg']
+  },
+  {
+    id: '36',
+    name: 'Gol Gumbaz',
+    latitude: 16.8153,
+    longitude: 74.5705,
+    description_en: 'Gol Gumbaz is the mausoleum of Sultan Mohammed Adil Shah in Bijapur, famous for its immense dome and whispering gallery. Its circular chamber amplifies sound so that a whisper on one side can be heard clearly across the room.',
+    description_hi: 'गोल गुम्बज़ बीजापुर में सुल्तान मोहम्मद अदिल शाह का मकबरा है, जो अपने विशाल गुंबद और फुसफुसाने वाली दीर्घा के लिए प्रसिद्ध है। इसका गोलाकार कक्ष ध्वनि को बढ़ाता है ताकि एक ओर की फुसफुसाहट कमरे के पार साफ़ सुनी जा सके।',
+    description_kn: 'ಗೋಲ್ ಗುಂಬಜ್ ಬೀಜಾಪುರದಲ್ಲಿನ ಸುಲ್ತಾನ್ ಮೊಹಮ್ಮದ್ ಅadil ಶಾ ಅವರ ಸಮಾಧಿಯಾಗಿದೆ, ಇದು ಅದರ ಭಾರೀ ಗುಂಬ್ ಮತ್ತು ಕುಗುಂಪು ಗ್ಯಾಲರಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಅದರ ವೃತ್ತಾಕಾರದ ಕೊಠಡಿ ಧ್ವನಿಯನ್ನು ಹೇರಿಕೆಯಾಗಿ ಪ್ರತಿಬಿಂಬಿಸುತ್ತದೆ ಮತ್ತು ಒಂದು ಬದಿಯ ಹುಡ್ಕಾರು ಕೆಳಗೆ ಸ್ಪಷ್ಟವಾಗಿ ಕೇಳಿಸಬಹುದು.',
+    category: 'monument',
+    builtYear: '1656',
+    dynasty: 'Adil Shahi',
+    architecturalStyle: 'Indo-Islamic mausoleum',
+    images: ['/images/Golgumbaz.jpg']
+  }
+];
+
 export function usePlaces() {
-  return useQuery({
-    queryKey: ['places'],
-    queryFn: async (): Promise<Place[]> => {
-      const { data, error } = await supabase
-        .from('places')
-        .select('id, name, latitude, longitude, description_en, description_hi, description_kn, images, category');
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+  return {
+    data: LOCAL_PLACES,
+    isLoading: false,
+    error: null
+  };
 }
