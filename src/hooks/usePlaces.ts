@@ -15,7 +15,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1638',
     dynasty: 'Mughal',
     architecturalStyle: 'Mughal',
-    images: ['/images/Red_Fort.jpg']
+    images: ['/images/Red_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Red_Fort'
   },
   {
     id: '2',
@@ -29,7 +30,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1192',
     dynasty: 'Mamluk',
     architecturalStyle: 'Indo-Islamic',
-    images: ['/images/Qutub_Minar.jpg']
+    images: ['/images/Qutub_Minar.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Qutb_Minar'
   },
   {
     id: '3',
@@ -43,7 +45,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1921',
     dynasty: 'British Raj',
     architecturalStyle: 'Indo-Saracenic',
-    images: ['/images/India_Gate.jpg']
+    images: ['/images/India_Gate.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/India_Gate'
   },
 
   // Agra
@@ -59,7 +62,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1653',
     dynasty: 'Mughal',
     architecturalStyle: 'Mughal',
-    images: ['/images/Taj_Mahal.jpg']
+    images: ['/images/Taj_Mahal.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Taj_Mahal'
   },
   {
     id: '5',
@@ -73,7 +77,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1565',
     dynasty: 'Mughal',
     architecturalStyle: 'Mughal',
-    images: ['/images/Agra_Fort.jpg']
+    images: ['/images/Agra_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Agra_Fort'
   },
 
   // Jaipur
@@ -89,7 +94,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1592',
     dynasty: 'Kachwaha Rajput',
     architecturalStyle: 'Rajput-Mughal',
-    images: ['/images/Amber_Fort.jpg']
+    images: ['/images/Amber_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Amber_Fort'
   },
   {
     id: '7',
@@ -103,7 +109,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1727',
     dynasty: 'Kachwaha Rajput',
     architecturalStyle: 'Rajput-Mughal',
-    images: ['/images/City_Palace_Jaipur.jpg']
+    images: ['/images/City_Palace_Jaipur.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/City_Palace,_Jaipur'
   },
   {
     id: '8',
@@ -117,7 +124,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1799',
     dynasty: 'Kachwaha Rajput',
     architecturalStyle: 'Rajput',
-    images: ['/images/Hawa_Mahal.jpg']
+    images: ['/images/Hawa_Mahal.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Hawa_Mahal'
   },
 
   // Varanasi
@@ -133,7 +141,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1780',
     dynasty: 'Maratha',
     architecturalStyle: 'Nagara',
-    images: ['/images/Kashi_Vishwanath_Temple.jpg']
+    images: ['/images/Kashi_Vishwanath_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Kashi_Vishwanath_Temple'
   },
 
   // Mumbai
@@ -149,7 +158,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1924',
     dynasty: 'British Raj',
     architecturalStyle: 'Indo-Saracenic',
-    images: ['/images/GateWay_of_India.jpg']
+    images: ['/images/GateWay_of_India.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Gateway_of_India'
   },
 
   // Chennai
@@ -165,7 +175,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '7th century CE',
     dynasty: 'Pallava/Chola',
     architecturalStyle: 'Dravidian',
-    images: ['/images/Kapaleeswara_Temple.jpg']
+    images: ['/images/Kapaleeswara_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Kapaleeshwarar_Temple'
   },
 
   // Kolkata
@@ -181,7 +192,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1921',
     dynasty: 'British Raj',
     architecturalStyle: 'Indo-Saracenic',
-    images: ['/images/Victoria_Memorial.jpg']
+    images: ['/images/Victoria_Memorial.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Victoria_Memorial,_Kolkata'
   },
 
   // Hyderabad
@@ -197,7 +209,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1591',
     dynasty: 'Qutb Shahi',
     architecturalStyle: 'Indo-Islamic',
-    images: ['/images/Charminar.jpg']
+    images: ['/images/Charminar.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Charminar'
   },
 
   // Bengaluru
@@ -213,7 +226,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1537',
     dynasty: 'Vijayanagara / Wodeyar',
     architecturalStyle: 'Medieval fortress',
-    images: ['/images/Bangalore_Fort.jpg']
+    images: ['/images/Bangalore_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Bangalore_Fort'
   },
 
   // More places...
@@ -229,7 +243,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1250',
     dynasty: 'Eastern Ganga',
     architecturalStyle: 'Kalinga',
-    images: ['/images/Konark_Sun_Temple.jpg']
+    images: ['/images/Konark_Sun_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Konark_Sun_Temple'
   },
   {
     id: '16',
@@ -243,7 +258,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1912',
     dynasty: 'Wadiyar',
     architecturalStyle: 'Indo-Saracenic',
-    images: ['/images/Mysore_Palace.jpg']
+    images: ['/images/Mysore_Palace.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Mysore_Palace'
   },
   {
     id: '17',
@@ -257,7 +273,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1604',
     dynasty: 'Sikh Gurus',
     architecturalStyle: 'Sikh',
-    images: ['/images/Golden_Temple.jpg']
+    images: ['/images/Golden_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Golden_Temple'
   },
   {
     id: '18',
@@ -271,7 +288,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '3rd century BCE',
     dynasty: 'Maurya / Satavahana',
     architecturalStyle: 'Buddhist',
-    images: ['/images/Sanchi_Stupa.jpg']
+    images: ['/images/Sanchi_Stupa.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Sanchi'
   },
   {
     id: '19',
@@ -285,7 +303,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '2nd century BCE',
     dynasty: 'Satavahana',
     architecturalStyle: 'Buddhist rock-cut',
-    images: ['/images/Ajanta_Caves.jpg']
+    images: ['/images/Ajanta_Caves.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Ajanta_Caves'
   },
   {
     id: '20',
@@ -299,7 +318,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '6th-10th century',
     dynasty: 'Chalukya / Rashtrakuta',
     architecturalStyle: 'Rock-cut',
-    images: ['/images/Ellora_Caves.jpg']
+    images: ['/images/Ellora_Caves.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Ellora_Caves'
   },
   {
     id: '21',
@@ -313,7 +333,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '7th century',
     dynasty: 'Pallava',
     architecturalStyle: 'Dravidian',
-    images: ['/images/Mahabalipuram.jpg']
+    images: ['/images/Mahabalipuram.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Mahabalipuram'
   },
   {
     id: '22',
@@ -327,7 +348,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1000',
     dynasty: 'Chandela',
     architecturalStyle: 'Nagara',
-    images: ['/images/Khajuraho_Temples.jpg']
+    images: ['/images/Khajuraho_Temples.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Khajuraho_Group_of_Monuments'
   },
   {
     id: '23',
@@ -341,7 +363,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1571',
     dynasty: 'Mughal',
     architecturalStyle: 'Indo-Islamic',
-    images: ['/images/Fatehpur_Sikri.jpg']
+    images: ['/images/Fatehpur_Sikri.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Fatehpur_Sikri'
   },
   {
     id: '24',
@@ -355,7 +378,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1592',
     dynasty: 'Kachwaha Rajput',
     architecturalStyle: 'Rajput-Mughal',
-    images: ['/images/Amer_Fort.jpg']
+    images: ['/images/Amer_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Amber_Fort'
   },
   {
     id: '25',
@@ -369,7 +393,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1156',
     dynasty: 'Rajput',
     architecturalStyle: 'Rajput',
-    images: ['/images/Jaisalmer_Fort.jpg']
+    images: ['/images/Jaisalmer_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Jaisalmer_Fort'
   },
   {
     id: '26',
@@ -383,7 +408,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '12th century',
     dynasty: 'Pandya / Nayak',
     architecturalStyle: 'Dravidian',
-    images: ['/images/Meenakshi_Temple.jpg']
+    images: ['/images/Meenakshi_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Meenakshi_Temple'
   },
   {
     id: '27',
@@ -397,7 +423,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1010',
     dynasty: 'Chola',
     architecturalStyle: 'Dravidian',
-    images: ['/images/Brihadeeswara_Temple.jpg']
+    images: ['/images/Brihadeeswara_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Brihadeeswarar_Temple'
   },
   {
     id: '28',
@@ -411,7 +438,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1063',
     dynasty: 'Solanki',
     architecturalStyle: 'Maru-Gurjara',
-    images: ['/images/Rani_Ki_Vav.jpg']
+    images: ['/images/Rani_Ki_Vav.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Rani_ki_Vav'
   },
   {
     id: '29',
@@ -425,7 +453,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '7th century',
     dynasty: 'Guhila / Sisodia',
     architecturalStyle: 'Rajput fortress',
-    images: ['/images/Chittogarh_Fort.jpg']
+    images: ['/images/Chittogarh_Fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Chittorgarh_Fort'
   },
   {
     id: '30',
@@ -439,7 +468,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1518',
     dynasty: 'Qutb Shahi',
     architecturalStyle: 'Fortified citadel',
-    images: ['/images/Golconda_fort.jpg']
+    images: ['/images/Golconda_fort.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Golconda'
   },
   {
     id: '31',
@@ -453,7 +483,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '5th-8th century',
     dynasty: 'Rashtrakuta',
     architecturalStyle: 'Rock-cut Hindu',
-    images: ['/images/Elephanta_Caves.jpg']
+    images: ['/images/Elephanta_Caves.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Elephanta_Caves'
   },
   {
     id: '32',
@@ -467,7 +498,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '6th century',
     dynasty: 'Chalukya',
     architecturalStyle: 'Dravidian rock-cut',
-    images: ['/images/Badani_Caves.jpg']
+    images: ['/images/Badani_Caves.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Badami_cave_temples'
   },
   {
     id: '33',
@@ -481,7 +513,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '14th century',
     dynasty: 'Vijayanagara',
     architecturalStyle: 'Dravidian',
-    images: ['/images/Hampi.jpg']
+    images: ['/images/Hampi.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Hampi'
   },
   {
     id: '34',
@@ -495,7 +528,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1012',
     dynasty: 'Chola / Vijayanagara',
     architecturalStyle: 'Dravidian',
-    images: ['/images/Srirangam_Temple.jpg']
+    images: ['/images/Srirangam_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Srirangam_Temple'
   },
   {
     id: '35',
@@ -509,7 +543,8 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1919',
     dynasty: 'British Raj',
     architecturalStyle: 'Memorial Garden',
-    images: ['/images/Jallianwala_Bagh.jpg']
+    images: ['/images/Jallianwala_Bagh.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Jallianwala_Bagh_massacre'
   },
   {
     id: '36',
@@ -523,7 +558,83 @@ const LOCAL_PLACES: Place[] = [
     builtYear: '1656',
     dynasty: 'Adil Shahi',
     architecturalStyle: 'Indo-Islamic mausoleum',
-    images: ['/images/Golgumbaz.jpg']
+    images: ['/images/Golgumbaz.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Gol_Gumbaz'
+  },
+  {
+    id: '37',
+    name: 'Belur Chennakeshava Temple',
+    latitude: 13.165,
+    longitude: 75.865,
+    description_en: 'Belur Chennakeshava Temple is a 12th-century Hoysala masterpiece dedicated to Lord Vishnu, renowned for its intricate soapstone carvings depicting gods, goddesses, and scenes from Hindu epics. Its star-shaped plan, ornate pillars, and detailed friezes showcase the pinnacle of Hoysala architecture and craftsmanship.',
+    description_hi: 'बेलूर चेन्नाकेशव मंदिर एक 12वीं सदी का होयसाला उत्कृष्ट कार्य है, जो भगवान विष्णु को समर्पित है और देवताओं, देवियों और हिंदू महाकाव्यों के दृश्यों को दर्शाने वाली जटिल साबुन पत्थर की नक्काशी के लिए प्रसिद्ध है। इसका तारा-आकार का प्लान, सजावटी स्तंभ और विस्तृत फ्राइज होयसाला वास्तुकला और शिल्प कौशल की चरम सीमा को दर्शाते हैं।',
+    description_kn: 'ಬೇಲೂರು ಚೆನ್ನಕೇಶವ ದೇವಸ್ಥಾನ 12ನೇ ಶತಮಾನದ ಹೊಯ್ಸಳ ಶ್ರೇಷ್ಠ ಕೃತಿ, ಭಗವಾನ್ ವಿಷ್ಣುವಿಗೆ ಸಮರ್ಪಿತವಾಗಿದೆ ಮತ್ತು ದೇವತೆಗಳು, ದೇವಿಯರು ಮತ್ತು ಹಿಂದೂ ಮಹಾಕಾವ್ಯಗಳ ದೃಶ್ಯಗಳನ್ನು ಚಿತ್ರಿಸುವ ಸಂಕೀರ್ಣ ಸೋಪ್‌ಸ್ಟೋನ್ ಶಿಲ್ಪಗಳಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಅದರ ನಕ್ಷತ್ರಾಕಾರದ ಯೋಜನೆ, ಅಲಂಕೃತ ಸ್ಥಂಭಗಳು ಮತ್ತು ವಿವರವಾದ ಫ್ರೀಜ್‌ಗಳು ಹೊಯ್ಸಳ ವಾಸ್ತುಶಿಲ್ಪ ಮತ್ತು ಶಿಲ್ಪ ಕೌಶಲ್ಯದ ಶಿಖರವನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1117',
+    dynasty: 'Hoysala',
+    architecturalStyle: 'Hoysala',
+    images: ['/images/Belur_Chennakeshava_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Chennakeshava_Temple,_Belur'
+  },
+  {
+    id: '38',
+    name: 'Halebidu Hoysaleswara Temple',
+    latitude: 13.211,
+    longitude: 75.988,
+    description_en: 'Halebidu Hoysaleswara Temple is a magnificent 12th-century Hoysala temple complex dedicated to Lord Shiva, featuring elaborate stone carvings of elephants, lions, and mythological scenes. Its symmetrical layout, detailed sculptures, and historical significance highlight the artistic excellence of the Hoysala dynasty.',
+    description_hi: 'हलेबिडु होयसलेस्वर मंदिर एक भव्य 12वीं सदी का होयसाला मंदिर परिसर है, जो भगवान शिव को समर्पित है और हाथियों, शेरों और पौराणिक दृश्यों की जटिल पत्थर की नक्काशी के लिए जाना जाता है। इसका सममित लेआउट, विस्तृत मूर्तियां और ऐतिहासिक महत्व होयसाला वंश की कलात्मक उत्कृष्टता को उजागर करता है।',
+    description_kn: 'ಹಳೇಬೀಡು ಹೊಯ್ಸಳೇಶ್ವರ ದೇವಸ್ಥಾನ 12ನೇ ಶತಮಾನದ ಭವ್ಯ ಹೊಯ್ಸಳ ದೇವಸ್ಥಾನ ಸಂಕೀರ್ಣ, ಭಗವಾನ್ ಶಿವನಿಗೆ ಸಮರ್ಪಿತವಾಗಿದೆ ಮತ್ತು ಆನೆಗಳು, ಸಿಂಹಗಳು ಮತ್ತು ಪೌರಾಣಿಕ ದೃಶ್ಯಗಳ ಸಂಕೀರ್ಣ ಶಿಲಾ ಶಿಲ್ಪಗಳಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ಅದರ ಸಮತೋಲನದ ಲೇಔಟ್, ವಿವರವಾದ ಶಿಲ್ಪಗಳು ಮತ್ತು ಐತಿಹಾಸಿಕ ಪ್ರಾಮುಖ್ಯತೆ ಹೊಯ್ಸಳ ವಂಶದ ಕಲಾತ್ಮಕ ಉತ್ಕೃಷ್ಟತೆಯನ್ನು ಹೈಲೈಟ್ ಮಾಡುತ್ತವೆ.',
+    category: 'temple',
+    builtYear: '1121',
+    dynasty: 'Hoysala',
+    architecturalStyle: 'Hoysala',
+    images: ['/images/Halebidu_Hoysaleswara_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Hoysaleswara_Temple'
+  },
+  {
+    id: '39',
+    name: 'Sravanabelagola Jain Temple',
+    latitude: 12.857,
+    longitude: 76.486,
+    description_en: 'Sravanabelagola is home to the colossal monolithic statue of Lord Gomateshwara, a 58-foot tall Jain saint carved in the 10th century. This sacred site features ancient Jain temples, inscriptions, and the Mahamastakabhisheka festival, representing the rich Jain heritage and spiritual significance of Karnataka.',
+    description_hi: 'श्रवणबेलगोला में भगवान गोमटेश्वर की विशाल एकल शिला प्रतिमा है, जो 10वीं सदी में तराशी गई 58 फुट ऊंची जैन संत की मूर्ति है। इस पवित्र स्थल में प्राचीन जैन मंदिर, शिलालेख और महामस्तकाभिषेक उत्सव शामिल हैं, जो कर्नाटक की समृद्ध जैन विरासत और आध्यात्मिक महत्व को दर्शाते हैं।',
+    description_kn: 'ಶ್ರವಣಬೆಳಗೊಳ ಭಗವಾನ್ ಗೋಮತೇಶ್ವರನ ಭಾರೀ ಏಕಶಿಲಾ ಪ್ರತಿಮೆಯ ಮನೆ, 10ನೇ ಶತಮಾನದಲ್ಲಿ ತೆಗೆಯಲಾದ 58 ಅಡಿ ಎತ್ತರದ ಜೈನ ಸಂತನ ಪ್ರತಿಮೆ. ಈ ಪವಿತ್ರ ಸ್ಥಳವು ಪ್ರಾಚೀನ ಜೈನ ದೇವಸ್ಥಾನಗಳು, ಶಿಲಾಲೇಖಗಳು ಮತ್ತು ಮಹಾಮಸ್ತಕಾಭಿಷೇಕ ಹಬ್ಬವನ್ನು ಒಳಗೊಂಡಿದೆ, ಕರ್ನಾಟಕದ ಸಮೃದ್ಧ ಜೈನ ಪಾರಂಪರ್ಯ ಮತ್ತು ಆಧ್ಯಾತ್ಮಿಕ ಪ್ರಾಮುಖ್ಯತೆಯನ್ನು ಪ್ರತಿನಿಧಿಸುತ್ತದೆ.',
+    category: 'temple',
+    builtYear: '981',
+    dynasty: 'Ganga / Rashtrakuta',
+    architecturalStyle: 'Jain monolithic',
+    images: ['/images/Sravanabelagola.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Sravanabelagola'
+  },
+  {
+    id: '40',
+    name: 'Dharmasthala Manjunatha Temple',
+    latitude: 12.947,
+    longitude: 75.381,
+    description_en: 'Dharmasthala Manjunatha Temple is a renowned Hindu temple dedicated to Lord Shiva, known for its unique administration by Jain priests and charitable activities. The temple complex includes beautiful architecture, sacred ponds, and hosts the annual Rathotsava festival, embodying religious harmony and social service.',
+    description_hi: 'धर्मस्थल मंजुनाथ मंदिर भगवान शिव को समर्पित एक प्रसिद्ध हिंदू मंदिर है, जो जैन पुजारियों द्वारा अपनी अनोखी प्रशासन और धर्मार्थ गतिविधियों के लिए जाना जाता है। मंदिर परिसर में सुंदर वास्तुकला, पवित्र तालाब और वार्षिक रथोत्सव उत्सव शामिल हैं, जो धार्मिक सद्भाव और सामाजिक सेवा को दर्शाते हैं।',
+    description_kn: 'ಧರ್ಮಸ್ಥಳ ಮಂಜುನಾಥ ದೇವಸ್ಥಾನ ಭಗವಾನ್ ಶಿವನಿಗೆ ಸಮರ್ಪಿತ ಪ್ರಸಿದ್ಧ ಹಿಂದೂ ದೇವಸ್ಥಾನ, ಜೈನ ಪುರೋಹಿತರಿಂದ ಅದರ ಅನನ್ಯ ನಿರ್ವಹಣೆ ಮತ್ತು ದಾನ ಕಾರ್ಯಗಳಿಗಾಗಿ ಪ್ರಸಿದ್ಧ. ದೇವಸ್ಥಾನ ಸಂಕೀರ್ಣವು ಸುಂದರ ವಾಸ್ತುಶಿಲ್ಪ, ಪವಿತ್ರ ಕೆರೆಗಳನ್ನು ಒಳಗೊಂಡಿದೆ ಮತ್ತು ವಾರ್ಷಿಕ ರಥೋತ್ಸವ ಹಬ್ಬವನ್ನು ಆಯೋಜಿಸುತ್ತದೆ, ಧಾರ್ಮಿಕ ಸಮರಸತೆ ಮತ್ತು ಸಾಮಾಜಿಕ ಸೇವೆಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತದೆ.',
+    category: 'temple',
+    builtYear: '16th century',
+    dynasty: 'Local chieftains',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Dharmasthala_Manjunatha_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Dharmasthala_Temple'
+  },
+  {
+    id: '41',
+    name: 'Kukke Subramanya Temple',
+    latitude: 12.665,
+    longitude: 75.616,
+    description_en: 'Kukke Subramanya Temple is a sacred Hindu temple dedicated to Lord Subramanya, located in the lush Western Ghats. Known for its serpent worship traditions and healing powers, the temple features Dravidian architecture, sacred groves, and the unique Kukke Shashti festival, attracting devotees seeking spiritual and physical well-being.',
+    description_hi: 'कुक्के सुब्रमण्य मंदिर भगवान सुब्रमण्य को समर्पित एक पवित्र हिंदू मंदिर है, जो हरे-भरे पश्चिमी घाटों में स्थित है। अपने सर्प पूजा परंपराओं और उपचार शक्तियों के लिए जाना जाता है, मंदिर में द्रविड़ वास्तुकला, पवित्र वन और अनोखा कुक्के षष्ठी उत्सव शामिल हैं, जो आध्यात्मिक और शारीरिक कल्याण की तलाश में भक्तों को आकर्षित करता है।',
+    description_kn: 'ಕುಕ್ಕೆ ಸುಬ್ರಮಣ್ಯ ದೇವಸ್ಥಾನ ಭಗವಾನ್ ಸುಬ್ರಮಣ್ಯನಿಗೆ ಸಮರ್ಪಿತ ಪವಿತ್ರ ಹಿಂದೂ ದೇವಸ್ಥಾನ, ಹಸಿರು ಪಶ್ಚಿಮ ಘಾಟ್‌ಗಳಲ್ಲಿ ಸ್ಥಿತಿಯಲ್ಲಿದೆ. ಅದರ ಸರ್ಪ ಪೂಜಾ ಸಂಪ್ರದಾಯಗಳು ಮತ್ತು ಗುಣಪಡಿಸುವ ಶಕ್ತಿಗಳಿಗಾಗಿ ಪ್ರಸಿದ್ಧ, ದೇವಸ್ಥಾನವು ದ್ರಾವಿಡ ವಾಸ್ತುಶಿಲ್ಪ, ಪವಿತ್ರ ವನಗಳು ಮತ್ತು ಅನನ್ಯ ಕುಕ್ಕೆ ಷಷ್ಠಿ ಹಬ್ಬವನ್ನು ಒಳಗೊಂಡಿದೆ, ಆಧ್ಯಾತ್ಮಿಕ ಮತ್ತು ದೈಹಿಕ ಕಲ್ಯಾಣವನ್ನು ಹುಡುಕುವ ಭಕ್ತರನ್ನು ಆಕರ್ಷಿಸುತ್ತದೆ.',
+    category: 'temple',
+    builtYear: 'Ancient',
+    dynasty: 'Various',
+    architecturalStyle: 'Dravidian',
+    images: ['/images/Kukke_Subramanya_Temple.jpg'],
+    wikipediaLink: 'https://en.wikipedia.org/wiki/Kukke_Subramanya_Temple'
   }
 ];
 

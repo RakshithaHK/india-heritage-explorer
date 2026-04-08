@@ -13,6 +13,7 @@ export interface Place {
   builtYear: string | null;
   dynasty: string | null;
   architecturalStyle: string | null;
+  wikipediaLink: string | null;
 }
 
 export const LANGUAGE_LABELS: Record<Language, string> = {
